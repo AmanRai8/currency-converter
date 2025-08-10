@@ -1,21 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CurrencySelect from "./CurrencySelect";
 
 const ConverterForm = () => {
+  const [inputAmount, setInputAmount] = useState("100");
+  const [amount, setAmount] = useState(100);
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toCurrency, setToCurrency] = useState("INR");
+  const [exchangeRate, setExchangeRate] = useState(null);
+  const [convertedAmount, setConvertedAmount] = useState(null);
 
-  //swapping the values of fromCurrency and toCurrency
   const handleSwapCurrencies = () => {
     setFromCurrency(toCurrency);
     setToCurrency(fromCurrency);
   };
 
+  const getExchangeRate = async (useAmount, fromCur, toCur) => {
+    const API_KEY = import.meta.env.VITE_API_KEY;
+    const API_URL = `https://api.fastforex.io/fetch-all?api_key=${API_KEY}`;
+
+    try {
+      const response = await fetch(API_URL);
+      if (!response.ok) throw new Error("Something went wrong!");
+      const data = await response.json();
+
+      const rate = data.results[toCur] / data.results[fromCur];
+      setExchangeRate(rate);
+      setConvertedAmount((useAmount * rate).toFixed(2));
+    } catch (error) {
+      console.error(error);
+      setExchangeRate(null);
+      setConvertedAmount(null);
+    }
+  };
+
+  useEffect(() => {
+    getExchangeRate(amount, fromCurrency, toCurrency);
+  }, []);
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const numAmount = Number(inputAmount);
+    setAmount(numAmount);
+    getExchangeRate(numAmount, fromCurrency, toCurrency);
+  };
+
   return (
-    <form className="converter-form">
+    <form className="converter-form" onSubmit={handleFormSubmit}>
       <div className="form-group">
         <label className="form-label">Enter Amount</label>
-        <input type="number" className="form-input" required />
+        <input
+          type="number"
+          className="form-input"
+          value={inputAmount}
+          onChange={(e) => setInputAmount(e.target.value)}
+          required
+        />
       </div>
       <div className="form-group form-currency-group">
         <div className="form-section">
@@ -50,7 +89,12 @@ const ConverterForm = () => {
       <button type="submit" className="submit-button">
         Get Exchange Rate
       </button>
-      <p className="exchange-rate-result">1,000 USD = 83620.80 INR</p>
+
+      {exchangeRate && convertedAmount && (
+        <p className="exchange-rate-result">
+          {amount} {fromCurrency} = {convertedAmount} {toCurrency}
+        </p>
+      )}
     </form>
   );
 };

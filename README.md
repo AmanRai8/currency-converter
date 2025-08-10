@@ -1,12 +1,44 @@
-# React + Vite
+# Currency Converter
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple and responsive currency converter app built with **React**. It allows you to convert between different currencies using live exchange rates and displays country flags for better user experience.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Convert currency values between multiple currencies
+- Fetches real-time exchange rates using **Exchange Rate API**
+- Displays country flags using **Flag API**
+- Responsive design for desktop and mobile devices
+- User-friendly interface with easy input and selection
 
-## Expanding the ESLint configuration
+## Technologies Used
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React
+- Fetch API / Axios (for API calls)
+- Flag API (for country flags)
+- Exchange Rate API (for currency conversion rates)
+- CSS / Tailwind / Styled Components (mention your styling method)
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js and npm installed on your machine
+
+### Installation
+
+1. Clone the repo
+   ```bash
+   git clone https://github.com/yourusername/currency-converter.git
+   ```
+2. Install dependencies
+   ```bash
+   npm install
+   ```
+3. Add your Exchange Rate API key in the .env file
+   ```bash
+   VITE_API_KEY= your_api_key
+   ```
+4. Run the app
+   ```bash
+   npm run dev
+   ```
